@@ -1,3 +1,6 @@
-pyqrcode
-colorama
-pypng
+pyqrcode>=1.2.1
+pypng>=0.20220715.0
+pyzbar>=0.1.9
+Pillow>=9.0.0
+colorama>=0.4.4
+svgwrite>=1.4.1
