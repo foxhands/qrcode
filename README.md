@@ -64,6 +64,4 @@ The script can be run  with the following options.
 
 ![prompt](qr_images/output.png)
 
-## **Contact me**
 
-For Queries: [Twitter](https://twitter.com/alias_notfound)
