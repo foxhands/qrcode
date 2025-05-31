@@ -8,6 +8,7 @@ from isort import file
 from yaml import parse
 from banner import banner
 from datetime import datetime
+
 try:
     import pyqrcode
     from pyzbar.pyzbar import decode
@@ -18,12 +19,14 @@ except ModuleNotFoundError:
     print("Install missing modules, check README.md for instructions\n")
     exit(1)
 
+
 def generate_qr(raw_text='', file_name=''):
     """Use pyqrcode to convert text and generate a qrcode"""
     qr_code = pyqrcode.create(raw_text)
     print(qr_code.terminal())
     qr_code.png(f'qrcodes/{file_name}.png', scale=10)
     print(Fore.GREEN + "\nYour image has been saved at " + Fore.CYAN + f"qrcodes/{file_name}.png")
+
 
 def read_qr(file_name):
     """Read a qrcode image and determine its content"""
@@ -32,6 +35,7 @@ def read_qr(file_name):
     print(Fore.GREEN + "[-] Scanning... Decoded.")
     print(f"{Fore.GREEN}[+] {Fore.WHITE}{qr_data}")
 
+
 def path_chk():
     path = "qrcodes"
     if not os.path.exists(path):
@@ -39,7 +43,8 @@ def path_chk():
         print("[!] False")
         print("Creating your images directory...")
         os.mkdir(path)
-        
+
+
 def main():
     parser = argparse.ArgumentParser(description='Creates a qrcode and a png file of the qrcode')
     parser.add_argument('-i', '--input', help='Your input text string to be converted')
@@ -50,10 +55,11 @@ def main():
     try:
         if args.input:
             raw_text = args.input
-            file_name = datetime.now().isoformat()
+            # Fixed: Use Windows-compatible filename format
+            file_name = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             print(banner())
             generate_qr(raw_text, file_name)
-        
+
         elif args.output:
             err_msg = "Input string is required!"
             print(Fore.RED + err_msg + Fore.RESET + banner())
@@ -64,7 +70,7 @@ def main():
             file_name = args.decode
             print(banner())
             read_qr(file_name)
-        
+
         elif args.input and args.output:
             raw_text = args.input
             file_name = args.output
@@ -74,7 +80,8 @@ def main():
         else:
             print(banner())
             raw_text = input(Fore.BLUE + '[>] Enter text to convert: ' + Style.RESET_ALL)
-            file_name = datetime.now().isoformat()
+            # Fixed: Use Windows-compatible filename format
+            file_name = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             generate_qr(raw_text, file_name)
 
     except KeyboardInterrupt:
@@ -85,6 +92,7 @@ def main():
         traceback.print_exc(file=sys.stdout)
 
     sys.exit(0)
+
 
 if __name__ == '__main__':
     path_chk()
